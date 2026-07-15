@@ -19,3 +19,14 @@ export async function login(email: string, password: string) {
   if (!res.ok) throw new Error((await res.json()).error || "Login failed");
   return res.json();
 }
+export async function getTopics() {
+  const res = await fetch(`${API_BASE}/curriculum/topics`);
+  if (!res.ok) throw new Error("Failed to load topics");
+  return res.json();
+}
+
+export async function getTopicWithLessons(slug: string) {
+  const res = await fetch(`${API_BASE}/curriculum/topics/${slug}`);
+  if (!res.ok) throw new Error("Failed to load topic");
+  return res.json();
+}

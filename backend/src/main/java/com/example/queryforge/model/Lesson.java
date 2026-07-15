@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -25,7 +24,7 @@ public class Lesson {
     @Column(nullable = false)
     private String title;
 
-    @Lob
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String contentMarkdown; // lesson body, rendered as markdown on frontend
 
