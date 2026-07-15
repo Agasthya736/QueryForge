@@ -1,65 +1,98 @@
-import Image from "next/image";
+import Link from "next/link";
 
-export default function Home() {
+const features = [
+  {
+    title: "AI-guided learning",
+    description: "A tutor agent explains concepts at your level, with live examples run against real data.",
+    badge: "Learn",
+  },
+  {
+    title: "Animated query execution",
+    description: "See exactly how a JOIN merges rows or an index avoids a full table scan, generated from real execution plans.",
+    badge: "Visualize",
+  },
+  {
+    title: "Mock technical interviews",
+    description: "Timed, no-hints practice rounds with rubric-based feedback on correctness, efficiency, and style.",
+    badge: "Interview",
+  },
+  {
+    title: "Multiple engines",
+    description: "Practice across MySQL, Postgres, SQLite, and MongoDB — not just one dialect.",
+    badge: "Flexible",
+  },
+];
+
+const levels = [
+  { name: "Beginner", desc: "SELECT, WHERE, sorting, and the fundamentals.", color: "text-green-400 bg-green-950" },
+  { name: "Intermediate", desc: "Joins, aggregates, subqueries, and views.", color: "text-accent-blue bg-blue-950" },
+  { name: "Advanced", desc: "Window functions, CTEs, optimization, and design.", color: "text-accent-purple bg-purple-950" },
+];
+
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="max-w-5xl mx-auto px-8">
+      {/* Hero */}
+      <section className="py-24 text-center">
+        <h1 className="text-4xl md:text-5xl font-semibold text-white mb-4 leading-tight">
+          Learn SQL the way you'll actually
+          <br />
+          be tested on it.
+        </h1>
+        <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-8">
+          QueryForge pairs structured lessons with AI agents that teach, quiz, and evaluate you —
+          built for interview prep, not just query practice.
+        </p>
+        <div className="flex items-center justify-center gap-4">
+          <Link
+            href="/register"
+            className="bg-gradient-to-r from-accent-blue to-accent-purple text-black font-medium px-6 py-3 rounded-full hover:opacity-90 transition-opacity"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Get started
+          </Link>
+          <Link
+            href="/learn"
+            className="border border-borderc text-gray-300 font-medium px-6 py-3 rounded-full hover:bg-surface-1 transition-colors"
           >
-            Documentation
-          </a>
+            Browse curriculum
+          </Link>
         </div>
-      </main>
+      </section>
+
+      {/* Features */}
+      <section className="py-12">
+        <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wide mb-6 text-center">
+          What makes this different
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {features.map((f) => (
+            <div key={f.title} className="bg-surface-1 border border-borderc rounded-card p-6">
+              <span className="text-xs px-2.5 py-1 rounded-full bg-surface-2 text-gray-400 mb-3 inline-block">
+                {f.badge}
+              </span>
+              <h3 className="font-medium text-white mb-2">{f.title}</h3>
+              <p className="text-sm text-gray-400">{f.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Levels */}
+      <section className="py-12 pb-24">
+        <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wide mb-6 text-center">
+          Structured by level
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {levels.map((l) => (
+            <div key={l.name} className="bg-surface-1 border border-borderc rounded-card p-6 text-center">
+              <span className={`text-xs px-2.5 py-1 rounded-full ${l.color} mb-3 inline-block`}>
+                {l.name}
+              </span>
+              <p className="text-sm text-gray-400">{l.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

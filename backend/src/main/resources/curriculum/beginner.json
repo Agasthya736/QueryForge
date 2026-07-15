@@ -1,0 +1,126 @@
+[
+  {
+    "slug": "select-basics",
+    "title": "SELECT Basics",
+    "description": "Retrieve data from a table.",
+    "orderIndex": 1,
+    "lessons": [
+      {
+        "title": "Introduction to SELECT",
+        "orderIndex": 1,
+        "content": "The `SELECT` statement retrieves rows from a table.\n\n```sql\nSELECT column1, column2 FROM table_name;\n```\n\nUse `SELECT *` to retrieve all columns, though naming columns explicitly is best practice — it avoids breaking your code if the table's columns change later, and makes queries self-documenting.\n\n**Column aliases**: rename output columns using `AS`:\n```sql\nSELECT first_name AS name, salary AS pay FROM employees;\n```"
+      },
+      {
+        "title": "SELECT with expressions",
+        "orderIndex": 2,
+        "content": "You can compute values directly in a `SELECT` list, not just retrieve raw columns:\n\n```sql\nSELECT first_name, salary, salary * 12 AS annual_salary\nFROM employees;\n```\n\nThis works with string concatenation, math, and function calls, all inside the same query."
+      }
+    ]
+  },
+  {
+    "slug": "where-filtering",
+    "title": "Filtering with WHERE",
+    "description": "Narrow down results using conditions.",
+    "orderIndex": 2,
+    "lessons": [
+      {
+        "title": "The WHERE clause",
+        "orderIndex": 1,
+        "content": "`WHERE` filters rows based on a condition, evaluated per row before results are returned.\n\n```sql\nSELECT * FROM employees WHERE salary > 50000;\n```\n\nCombine conditions with `AND` / `OR`:\n```sql\nSELECT * FROM employees\nWHERE department = 'Engineering' AND salary > 80000;\n```"
+      },
+      {
+        "title": "IN, BETWEEN, LIKE",
+        "orderIndex": 2,
+        "content": "**IN** — match against a list of values:\n```sql\nSELECT * FROM employees WHERE department IN ('Sales', 'Marketing');\n```\n\n**BETWEEN** — match an inclusive range:\n```sql\nSELECT * FROM employees WHERE salary BETWEEN 50000 AND 80000;\n```\n\n**LIKE** — pattern matching with `%` (any characters) and `_` (single character):\n```sql\nSELECT * FROM employees WHERE email LIKE '%@company.com';\n```"
+      }
+    ]
+  },
+  {
+    "slug": "order-by-limit",
+    "title": "Sorting & Limiting Results",
+    "description": "Control the order and quantity of returned rows.",
+    "orderIndex": 3,
+    "lessons": [
+      {
+        "title": "ORDER BY",
+        "orderIndex": 1,
+        "content": "`ORDER BY` sorts results. Default is ascending (`ASC`); use `DESC` for descending.\n\n```sql\nSELECT name, salary FROM employees ORDER BY salary DESC;\n```\n\nSort by multiple columns — ties in the first column are broken by the second:\n```sql\nSELECT * FROM employees ORDER BY department ASC, salary DESC;\n```"
+      },
+      {
+        "title": "LIMIT and OFFSET",
+        "orderIndex": 2,
+        "content": "`LIMIT` restricts the number of rows returned — essential for pagination and top-N queries.\n\n```sql\nSELECT * FROM employees ORDER BY salary DESC LIMIT 5;\n```\n\nCombine with `OFFSET` to skip rows (e.g., for page 2 of results):\n```sql\nSELECT * FROM employees ORDER BY id LIMIT 10 OFFSET 10;\n```\n\nNote: MySQL/Postgres use `LIMIT`/`OFFSET`; SQL Server uses `OFFSET ... FETCH NEXT` instead."
+      }
+    ]
+  },
+  {
+    "slug": "distinct-values",
+    "title": "DISTINCT & Removing Duplicates",
+    "description": "Retrieve unique values from a column or combination of columns.",
+    "orderIndex": 4,
+    "lessons": [
+      {
+        "title": "Using DISTINCT",
+        "orderIndex": 1,
+        "content": "`DISTINCT` removes duplicate rows from the result set.\n\n```sql\nSELECT DISTINCT department FROM employees;\n```\n\nWith multiple columns, `DISTINCT` considers the *combination* unique — not each column independently:\n```sql\nSELECT DISTINCT department, job_title FROM employees;\n```\nThis returns unique department+job_title pairs, not all unique departments and all unique job titles separately."
+      }
+    ]
+  },
+  {
+    "slug": "null-handling",
+    "title": "Working with NULL",
+    "description": "Understand how NULL behaves differently from other values.",
+    "orderIndex": 5,
+    "lessons": [
+      {
+        "title": "NULL is not a value",
+        "orderIndex": 1,
+        "content": "`NULL` means \"unknown\" or \"absent\", not zero or empty string. This has surprising consequences:\n\n```sql\nSELECT * FROM employees WHERE bonus = NULL;  -- returns NOTHING, always\nSELECT * FROM employees WHERE bonus IS NULL; -- correct way to check\n```\n\nAny arithmetic or comparison with `NULL` produces `NULL`, not `true`/`false`. Use `IS NULL` / `IS NOT NULL`, never `= NULL`.\n\n**COALESCE** substitutes a default when a value is `NULL`:\n```sql\nSELECT name, COALESCE(bonus, 0) AS bonus FROM employees;\n```"
+      }
+    ]
+  },
+  {
+    "slug": "string-functions",
+    "title": "String Functions",
+    "description": "Manipulate and format text data.",
+    "orderIndex": 6,
+    "lessons": [
+      {
+        "title": "Common string functions",
+        "orderIndex": 1,
+        "content": "```sql\nSELECT\n  UPPER(name) AS upper_name,\n  LOWER(name) AS lower_name,\n  LENGTH(name) AS name_length,\n  CONCAT(first_name, ' ', last_name) AS full_name,\n  TRIM(name) AS trimmed,\n  SUBSTRING(name, 1, 3) AS first_three_chars\nFROM employees;\n```\n\nNote: function names vary slightly by dialect — MySQL uses `CONCAT()`, Postgres also supports the `||` operator (`first_name || ' ' || last_name`)."
+      }
+    ]
+  },
+  {
+    "slug": "numeric-date-functions",
+    "title": "Numeric & Date Functions",
+    "description": "Perform calculations and work with dates/times.",
+    "orderIndex": 7,
+    "lessons": [
+      {
+        "title": "Numeric functions",
+        "orderIndex": 1,
+        "content": "```sql\nSELECT\n  ROUND(salary, 2) AS rounded,\n  CEIL(salary) AS rounded_up,\n  FLOOR(salary) AS rounded_down,\n  ABS(profit_loss) AS absolute_value\nFROM financials;\n```"
+      },
+      {
+        "title": "Date functions",
+        "orderIndex": 2,
+        "content": "```sql\nSELECT\n  hire_date,\n  EXTRACT(YEAR FROM hire_date) AS hire_year,\n  CURRENT_DATE - hire_date AS days_employed\nFROM employees;\n```\n\nDate function names differ significantly across dialects (`DATEDIFF` in MySQL vs interval arithmetic in Postgres) — this is a common interview gotcha worth knowing."
+      }
+    ]
+  },
+  {
+    "slug": "insert-update-delete",
+    "title": "INSERT, UPDATE, DELETE",
+    "description": "Modify data, not just read it.",
+    "orderIndex": 8,
+    "lessons": [
+      {
+        "title": "Modifying data",
+        "orderIndex": 1,
+        "content": "**INSERT** adds new rows:\n```sql\nINSERT INTO employees (name, salary) VALUES ('Alice', 75000);\n```\n\n**UPDATE** modifies existing rows — always use `WHERE`, or every row gets updated:\n```sql\nUPDATE employees SET salary = salary * 1.1 WHERE department = 'Engineering';\n```\n\n**DELETE** removes rows — same warning applies:\n```sql\nDELETE FROM employees WHERE id = 42;\n```\n\nA `WHERE`-less `UPDATE` or `DELETE` is one of the most common real-world SQL mistakes — always double check before running one in production."
+      }
+    ]
+  }
+]

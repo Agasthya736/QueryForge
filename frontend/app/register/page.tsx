@@ -23,31 +23,37 @@ export default function RegisterPage() {
     }
   }
 
+  const inputClass =
+    "w-full bg-surface-1 border border-borderc text-white placeholder-gray-500 rounded-lg px-3 py-2 focus:outline-none focus:border-accent-blue transition-colors";
+
   return (
-    <div className="flex min-h-screen items-center justify-center">
+    <div className="flex min-h-[80vh] items-center justify-center px-4">
       <form onSubmit={handleSubmit} className="w-80 space-y-4">
-        <h1 className="text-2xl font-semibold">Create your QueryForge account</h1>
+        <h1 className="text-2xl font-semibold text-white mb-2">Create your account</h1>
         <input
           type="text" placeholder="Display name" value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
-          className="w-full border rounded px-3 py-2"
+          className={inputClass}
         />
         <input
           type="email" placeholder="Email" value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full border rounded px-3 py-2"
+          className={inputClass}
         />
         <input
           type="password" placeholder="Password" value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full border rounded px-3 py-2"
+          className={inputClass}
         />
-        {error && <p className="text-red-500 text-sm">{error}</p>}
-        <button type="submit" className="w-full bg-black text-white rounded px-3 py-2">
+        {error && <p className="text-red-400 text-sm">{error}</p>}
+        <button
+          type="submit"
+          className="w-full bg-gradient-to-r from-accent-blue to-accent-purple text-black font-medium rounded-lg px-3 py-2 hover:opacity-90 transition-opacity"
+        >
           Sign up
         </button>
-        <p className="text-sm text-center">
-          Already have an account? <Link href="/login" className="underline">Log in</Link>
+        <p className="text-sm text-center text-gray-400">
+          Already have an account? <Link href="/login" className="text-accent-blue hover:underline">Log in</Link>
         </p>
       </form>
     </div>

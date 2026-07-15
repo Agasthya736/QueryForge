@@ -1,0 +1,113 @@
+[
+  {
+    "slug": "joins",
+    "title": "JOINs",
+    "description": "Combine rows from two or more tables.",
+    "orderIndex": 1,
+    "lessons": [
+      {
+        "title": "INNER JOIN",
+        "orderIndex": 1,
+        "content": "An `INNER JOIN` returns only rows with matches in both tables.\n\n```sql\nSELECT o.id, c.name\nFROM orders o\nJOIN customers c ON o.customer_id = c.id;\n```\n\n`JOIN` alone defaults to `INNER JOIN` in most dialects."
+      },
+      {
+        "title": "LEFT, RIGHT, and FULL OUTER JOIN",
+        "orderIndex": 2,
+        "content": "**LEFT JOIN** keeps all rows from the left table, filling unmatched right-side columns with `NULL`:\n```sql\nSELECT c.name, o.id\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id;\n```\nThis finds customers with **no orders** (`o.id IS NULL`) — a very common interview pattern.\n\n**RIGHT JOIN** is the mirror image (rare in practice — usually rewritten as a LEFT JOIN with tables swapped).\n\n**FULL OUTER JOIN** keeps unmatched rows from both sides."
+      },
+      {
+        "title": "Self joins",
+        "orderIndex": 3,
+        "content": "A self join relates a table to itself — common for hierarchical data like employee/manager relationships:\n```sql\nSELECT e.name AS employee, m.name AS manager\nFROM employees e\nLEFT JOIN employees m ON e.manager_id = m.id;\n```"
+      }
+    ]
+  },
+  {
+    "slug": "group-by-aggregates",
+    "title": "GROUP BY & Aggregates",
+    "description": "Summarize data with COUNT, SUM, AVG, and GROUP BY.",
+    "orderIndex": 2,
+    "lessons": [
+      {
+        "title": "Aggregate functions",
+        "orderIndex": 1,
+        "content": "Aggregate functions operate over groups of rows: `COUNT`, `SUM`, `AVG`, `MIN`, `MAX`.\n\n```sql\nSELECT department, COUNT(*) AS headcount, AVG(salary) AS avg_salary\nFROM employees\nGROUP BY department;\n```\n\nEvery non-aggregated column in the `SELECT` list must appear in `GROUP BY`, or the query is invalid in most dialects."
+      },
+      {
+        "title": "HAVING vs WHERE",
+        "orderIndex": 2,
+        "content": "`WHERE` filters rows **before** grouping; `HAVING` filters groups **after** aggregation.\n\n```sql\nSELECT department, AVG(salary) AS avg_salary\nFROM employees\nWHERE hire_date > '2020-01-01'\nGROUP BY department\nHAVING AVG(salary) > 70000;\n```\n\nThis is one of the most frequently tested distinctions in SQL interviews."
+      }
+    ]
+  },
+  {
+    "slug": "subqueries",
+    "title": "Subqueries",
+    "description": "Nest queries inside other queries.",
+    "orderIndex": 3,
+    "lessons": [
+      {
+        "title": "Subqueries in WHERE",
+        "orderIndex": 1,
+        "content": "A subquery returns a result used by the outer query:\n```sql\nSELECT name FROM employees\nWHERE department_id IN (\n  SELECT id FROM departments WHERE location = 'NYC'\n);\n```"
+      },
+      {
+        "title": "Correlated subqueries",
+        "orderIndex": 2,
+        "content": "A correlated subquery references a column from the outer query, so it re-runs per outer row:\n```sql\nSELECT name, salary FROM employees e\nWHERE salary > (\n  SELECT AVG(salary) FROM employees WHERE department_id = e.department_id\n);\n```\nThis finds employees earning above their **own department's** average — a classic interview question."
+      }
+    ]
+  },
+  {
+    "slug": "set-operations",
+    "title": "UNION, INTERSECT, EXCEPT",
+    "description": "Combine results from multiple queries.",
+    "orderIndex": 4,
+    "lessons": [
+      {
+        "title": "Set operations",
+        "orderIndex": 1,
+        "content": "**UNION** combines results and removes duplicates; **UNION ALL** keeps duplicates (and is faster, since it skips deduplication):\n```sql\nSELECT name FROM current_employees\nUNION\nSELECT name FROM alumni;\n```\n\n**INTERSECT** returns rows common to both queries; **EXCEPT** (or `MINUS` in Oracle) returns rows in the first query but not the second. Both queries must have the same number of columns with compatible types."
+      }
+    ]
+  },
+  {
+    "slug": "case-expressions",
+    "title": "CASE Expressions",
+    "description": "Add conditional logic directly into SQL queries.",
+    "orderIndex": 5,
+    "lessons": [
+      {
+        "title": "CASE WHEN",
+        "orderIndex": 1,
+        "content": "`CASE` lets you branch logic within a query, similar to if/else:\n```sql\nSELECT name, salary,\n  CASE\n    WHEN salary > 100000 THEN 'High'\n    WHEN salary > 60000 THEN 'Medium'\n    ELSE 'Entry'\n  END AS salary_band\nFROM employees;\n```\nUseful for bucketing data, conditional aggregation, and pivot-style reporting directly in SQL."
+      }
+    ]
+  },
+  {
+    "slug": "views",
+    "title": "Views",
+    "description": "Save reusable queries as virtual tables.",
+    "orderIndex": 6,
+    "lessons": [
+      {
+        "title": "Creating and using views",
+        "orderIndex": 1,
+        "content": "A view is a saved query that behaves like a table:\n```sql\nCREATE VIEW high_earners AS\nSELECT name, salary FROM employees WHERE salary > 100000;\n\nSELECT * FROM high_earners WHERE name LIKE 'A%';\n```\nViews don't store data themselves (with exceptions like materialized views) — they re-run the underlying query each time they're referenced."
+      }
+    ]
+  },
+  {
+    "slug": "indexes-basics",
+    "title": "Indexes — Introduction",
+    "description": "Understand how indexes speed up query lookups.",
+    "orderIndex": 7,
+    "lessons": [
+      {
+        "title": "Why indexes matter",
+        "orderIndex": 1,
+        "content": "Without an index, finding a row requires scanning every row (a **sequential/full table scan**). An index is a separate sorted structure (typically a B-tree) that lets the database jump directly to matching rows.\n\n```sql\nCREATE INDEX idx_employees_department ON employees(department);\n```\n\n**Trade-off**: indexes speed up reads but slow down writes (every `INSERT`/`UPDATE` must also update the index), and consume additional storage. This trade-off is a common interview discussion point."
+      }
+    ]
+  }
+]

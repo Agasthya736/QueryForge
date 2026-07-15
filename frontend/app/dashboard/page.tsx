@@ -15,15 +15,17 @@ export default function DashboardPage() {
     }
   }, [router]);
 
-  if (!checked) return null; // avoid flashing content before redirect check
+  if (!checked) return null;
 
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-semibold mb-4">Your Dashboard</h1>
-      <p className="text-gray-600">
-        Progress tracking, skill graph, and mock interview history will show up here
-        once Phase 6 (Progress Tracker) is built. For now, this confirms auth is working.
-      </p>
+    <div className="p-8 max-w-4xl mx-auto">
+      <h1 className="text-2xl font-semibold text-white mb-4">Your dashboard</h1>
+      <div className="bg-surface-1 border border-borderc rounded-card p-6">
+        <p className="text-gray-400">
+          Progress tracking, skill graph, and mock interview history will show up here
+          once the Progress Tracker is built. For now, this confirms auth is working.
+        </p>
+      </div>
     </div>
   );
 }
